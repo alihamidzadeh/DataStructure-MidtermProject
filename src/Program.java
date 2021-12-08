@@ -242,7 +242,7 @@ public class Program {
         return output.toString() + " => " + OutputPostfix;
     }
 
-    //dorost :)))
+    //dorost :))))
     public static String InfixToPrefix2(String infix) {
         infix = infix.trim();
         System.out.println("Infix Expression:\n" + infix + "\n");
