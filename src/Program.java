@@ -30,10 +30,12 @@ public class Program {
         exp1 = "A B / C - D E * + A C * -";
         exp1 = "A B C - D + / E A - * C *";
         exp1 = "10 3 5 * 16 4 - / +";
-//        exp1 = "x y + sin z *";
-//        exp1 = "x y + Tan z *";
-//        exp1 = "a b + sin 10 *";
-//        exp1 = "a / b - c + d - e";
+        exp1 = "u w z / y * + x +";
+        exp1 = "x y z * w / + u +";
+        exp1 = "a b * c +";
+        exp1 = "x y + sin z *";
+        exp1 = "x y + Tan z *";
+        exp1 = "a b + sin 10 *";
 
         //        exp1 = sc.nextLine();
 //        System.out.println("******************************************************");
@@ -47,14 +49,14 @@ public class Program {
         exp1 = "+ + u * / w z y x";
         exp1 = "+ + x / * y z w u";
         exp1 = "+ * a b c";
-//        exp1 = "* sin + x y z";
-//        exp1 = "* Tan + x y z";
-//        exp1 = "* sin + a b 10";
+        exp1 = "* sin + x y z";
+        exp1 = "* Tan + x y z";
+        exp1 = "* sin + a b 10";
 
         //        exp1 = sc.nextLine();
         System.out.println("******************************************************");
-        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToInfix(exp1));
-//        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToPostfix(exp1));
+//        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToInfix(exp1));
+        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToPostfix(exp1));
 
     }
 
@@ -264,13 +266,14 @@ public class Program {
         System.out.println("prefix Expression:\n" + prefix + "\n");
         Stack<String> output = new Stack<>();
         String[] input = prefix.split(" ");
+        String operatorRegex = "[-+*/]?";
+
         for (int i = input.length - 1; i >= 0; i--) {
             String ch = input[i];
-            String operatorRegex = "[-+*/]?";
             if (ch.matches(operatorRegex)) {
                 String a = output.pop();
                 String b = output.pop();
-                    output.push("(" + a + " " +ch + " " + b + ")");
+                output.push("(" + a + " " + ch + " " + b + ")");
             } else
                 output.push(ch);
 
@@ -285,16 +288,39 @@ public class Program {
         return output.toString() + " => " + str.trim();
     }
 
+    public static String PrefixToPostfix(String prefix) {
+        prefix = prefix.trim();
+        System.out.println("prefix Expression:\n" + prefix + "\n");
+        Stack<String> output = new Stack<>();
+        String[] input = prefix.split(" ");
+        String operatorRegex = "[-+*/]?";
+        String TrigonometricFunctionsRegex = "[";
+        for (int i = input.length - 1; i >= 0; i--) {
+            String ch = input[i];
+            if (ch.matches(operatorRegex)) {
+                String a = output.pop();
+                String b = output.pop();
+                output.push(a + " " + b + " " + ch);
+            } else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos")
+                    || ch.equalsIgnoreCase("tan") || ch.equalsIgnoreCase("cot")) {
+                String a = output.pop();
+                output.push(a + " " + ch);
+            } else
+                output.push(ch);
+
+            Print(input.length - i - 1, output);
+        }
+        String str = new String("");
+        for (String ch : output) {
+            str += ch;
+            str += " ";
+        }
+        return output.toString() + " => " + str.trim();
+    }
+
     //***************************************************************************************
 
     public static String PostfixToPrefix(String postfix) {
-        String str = null;
-
-
-        return str;
-    }
-
-    public static String PrefixToPostfix(String prefix) {
         String str = null;
 
 

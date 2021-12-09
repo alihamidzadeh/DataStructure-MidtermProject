@@ -1,52 +1,50 @@
-// Java program to convert prefix to Infix
+// JavaProgram to convert prefix to postfix
 
-import java.util.Stack;
+import java.util.*;
 
 class GFG {
 
-    // Function to check if character
-// is operator or not
+    // function to check if character
+    // is operator or not
     static boolean isOperator(char x) {
         switch (x) {
             case '+':
             case '-':
-            case '*':
             case '/':
+            case '*':
                 return true;
         }
         return false;
     }
 
-    // Convert prefix to Infix expression
-    public static String convert(String str) {
-        Stack<String> stack = new Stack<>();
+    static String preToPost(String input) {
 
-        // Length of expression
-        int l = str.length();
+        Stack<String> s = new Stack<String>();
 
-        // Reading from right to left
-        for (int i = l - 1; i >= 0; i--) {
-            char c = str.charAt(i);
-            if (isOperator(c)) {
-                String op1 = stack.pop();
-                String op2 = stack.pop();
+        int length = input.length();
 
-                // Concat the operands and operator
-                String temp = "(" + op1 + c + op2 + ")";
-                stack.push(temp);
-            } else {
-
-                // To make character to string
-                stack.push(c + "");
+        for (int i = length - 1; i >= 0; i--) {
+            if (isOperator(input.charAt(i))) {
+                String op1 = s.pop();
+                String op2 = s.pop();
+                s.push(op1 + " " + op2 + " " + input.charAt(i));
             }
+
+            else
+                s.push(input.charAt(i)+"");
         }
-        return stack.pop();
+
+        // stack contains only the Postfix expression
+        return s.peek();
     }
 
-    // Driver code
-    public static void main(String[] args) {
-        String exp = "*-A/BC-/AKL";
-        System.out.println("Infix : " + convert(exp));
+    // Driver Code
+    public static void main(String args[]) {
+        String input = "*-A/BC-/AKL";
+        input = "-+-/ABC*DE*AC";
+        System.out.println("Postfix : "
+                + preToPost(input));
     }
 }
 
+// This code is contributed by Arnab Kundu
