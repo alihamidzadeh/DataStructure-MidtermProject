@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Stack;
+import java.util.*;
 import java.util.Stack;
 
 public class Program {
@@ -8,41 +6,55 @@ public class Program {
 
     public static void main(String[] args) {
         String exp1 = null;
+        Scanner sc = new Scanner(System.in);
+
 
         //Todo test for (Infix To Postfix) && (Infix To Prefix)
         exp1 = "A / B - C + D * E - A * C";
         exp1 = "( A / ( B - C + D ) ) * ( E - A ) * C";
-//        exp1 = "10 + 3 * 5 / ( 16 - 4 )";
-//        exp1 = "sin ( x + y ) * z";
-//        exp1 = "Tan ( x + y ) * z";
-//        exp1 = "sin ( a + b ) * 10";
-//        exp1 = "u + ( w / z ) * y + x";
-//        exp1 = "x + y * z / w + u"; //kharab mide
-//        exp1 = "( a * b ) + c";
+        exp1 = "10 + 3 * 5 / ( 16 - 4 )";
+        exp1 = "u + ( w / z ) * y + x";
+        exp1 = "x + y * z / w + u";
+        exp1 = "( a * b ) + c";
+        exp1 = "sin ( x + y ) * z";
+        exp1 = "Tan ( x + y ) * z";
+        exp1 = "sin ( a + b ) * 10";
 
 
-        System.out.println("******************************************************");
+//        exp1 = sc.nextLine();
+//        System.out.println("******************************************************");
 //        System.out.println("Output is:\n" + InfixToPostfix(exp1));
-        System.out.println("Input is:\n                                 " + exp1 + "\nOutput is:\n" + InfixToPrefix2(exp1));
+//        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + InfixToPrefix(exp1));
 
         //Todo test for (Postfix To Infix) && (Postfix To Prefix)
         exp1 = "A B / C - D E * + A C * -";
         exp1 = "A B C - D + / E A - * C *";
         exp1 = "10 3 5 * 16 4 - / +";
-        exp1 = "x y + sin z *";
-        exp1 = "x y + Tan z *";
-        exp1 = "a b + sin 10 *";
-        exp1 = "a / b - c + d - e";
+//        exp1 = "x y + sin z *";
+//        exp1 = "x y + Tan z *";
+//        exp1 = "a b + sin 10 *";
+//        exp1 = "a / b - c + d - e";
 
+        //        exp1 = sc.nextLine();
 //        System.out.println("******************************************************");
 //        System.out.println("Output is:\n" + PostfixToInfix(exp1));
+//        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PostfixToPrefix(exp1));
 
         //Todo test for (Prefix To Infix) && (Prefix To Postix)
-        exp1 = "- / A B + C - * D E * A C";
-        exp1 = "* / A - B + C D * - E A C";
-        exp1 = "+ 10 * 3 / 5 - 16 4";
-//        exp1 = "Tan ( x + y ) * z";
-//        exp1 = "sin ( a + b ) * 10";
+        exp1 = "- + - / A B C * D E * A C";
+        exp1 = "* * / A + - B C D - E A C";
+        exp1 = "+ 10 / * 3 5 - 16 4";
+        exp1 = "+ + u * / w z y x";
+        exp1 = "+ + x / * y z w u";
+        exp1 = "+ * a b c";
+//        exp1 = "* sin + x y z";
+//        exp1 = "* Tan + x y z";
+//        exp1 = "* sin + a b 10";
+
+        //        exp1 = sc.nextLine();
+        System.out.println("******************************************************");
+        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToInfix(exp1));
+//        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToPostfix(exp1));
 
     }
 
@@ -146,7 +158,8 @@ public class Program {
             String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
             if (ch.matches(CheckDigitOrLetterPattern))
                 output.push(ch);
-            else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos") || ch.equalsIgnoreCase("tan") || ch.equalsIgnoreCase("cot")) {
+            else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos")
+                    || ch.equalsIgnoreCase("tan") || ch.equalsIgnoreCase("cot")) {
                 String a = output.pop();
                 output.push(ch + "(" + a + ")");
             } else {  //if character of infix is operator,
@@ -170,80 +183,7 @@ public class Program {
         return output.toString() + " => " + str.trim();
     }
 
-    //kharab
     public static String InfixToPrefix(String infix) {
-        infix = infix.trim();
-        System.out.println("Infix Expression:\n" + infix + "\n");
-
-        String[] InfixArray = infix.split(" ");
-        String[] ReverseInfixArray = new String[InfixArray.length];
-        for (int i = 0; i < InfixArray.length; i++) {
-            ReverseInfixArray[i] = InfixArray[InfixArray.length - i - 1];
-        }
-        infix = Arrays.toString(ReverseInfixArray).replace(",", "")
-                .replace("[", "").replace("]", "");
-        Stack<String> output = new Stack<>();
-        Stack<String> operators = new Stack<>();
-        String[] input = infix.split(" ");
-
-        for (int i = 0; i < input.length; i++) {
-
-            if (input[i].equals("("))
-                input[i] = ")";
-            else if (input[i].equals(")"))
-                input[i] = "(";
-
-            String ch = input[i];
-
-            //if character of infix is letter or digit push it to output
-            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
-            if (ch.matches(CheckDigitOrLetterPattern))
-                output.push(ch);
-
-                //if character of infix is '(', push it to operators
-            else if (ch.equals("("))
-                operators.push(ch);
-
-            else if (ch.equals(")")) {
-                while (!operators.isEmpty() && !operators.peek().equals("("))
-                    output.push(operators.pop());
-                //finally pop '(' in operators
-                operators.pop();
-            }
-            //if character of infix is an operator
-            else {
-                if (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek()))
-                    output.push(operators.pop());
-
-                //finally push the new operator of infix in operators
-                operators.push(ch);
-            }
-
-            //Print each series of steps
-            Print(i, operators, output);
-        }
-
-        //Finally, check the input expression is correct
-        // and move the operators from the operators to the output
-        while (!operators.isEmpty()) {
-            if (operators.peek() == "(")
-                return "The input infix statement is invalid";
-            output.push(operators.pop());
-        }
-
-        String[] OutputArray = String.valueOf(output).split(" ");
-        String[] ReverseOutputArray = new String[OutputArray.length];
-
-        for (int i = 0; i < OutputArray.length; i++)
-            ReverseOutputArray[i] = OutputArray[OutputArray.length - i - 1];
-
-        String OutputPostfix = Arrays.toString(ReverseOutputArray).replace(",", "")
-                .replace("[", "").replace("]", "").trim();
-        return output.toString() + " => " + OutputPostfix;
-    }
-
-    //dorost :))))
-    public static String InfixToPrefix2(String infix) {
         infix = infix.trim();
         System.out.println("Infix Expression:\n" + infix + "\n");
 
@@ -319,13 +259,33 @@ public class Program {
         return output.toString() + " => " + OutputPostfix;
     }
 
-    //***************************************************************************************
     public static String PrefixToInfix(String prefix) {
-        String str = null;
+        prefix = prefix.trim();
+        System.out.println("prefix Expression:\n" + prefix + "\n");
+        Stack<String> output = new Stack<>();
+        String[] input = prefix.split(" ");
+        for (int i = input.length - 1; i >= 0; i--) {
+            String ch = input[i];
+            String operatorRegex = "[-+*/]?";
+            if (ch.matches(operatorRegex)) {
+                String a = output.pop();
+                String b = output.pop();
+                    output.push("(" + a + " " +ch + " " + b + ")");
+            } else
+                output.push(ch);
 
+            Print(input.length - i - 1, output);
+        }
 
-        return str;
+        String str = new String("");
+        for (String ch : output) {
+            str += ch;
+            str += " ";
+        }
+        return output.toString() + " => " + str.trim();
     }
+
+    //***************************************************************************************
 
     public static String PostfixToPrefix(String postfix) {
         String str = null;
