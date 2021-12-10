@@ -19,7 +19,7 @@ public class Program {
         exp1 = "sin ( x + y ) * z";
         exp1 = "Tan ( x + y ) * z";
         exp1 = "sin ( a + b ) * 10";
-
+        exp1 = "sin ( a + b )";
 
 //        exp1 = sc.nextLine();
 //        System.out.println("******************************************************");
@@ -43,17 +43,17 @@ public class Program {
 //        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PostfixToPrefix(exp1));
 
         //Todo test for (Prefix To Infix) && (Prefix To Postix)
-        exp1 = "- + - / A B C * D E * A C";
-        exp1 = "* * / A + - B C D - E A C";
-        exp1 = "+ 10 / * 3 5 - 16 4";
-        exp1 = "+ + u * / w z y x";
-        exp1 = "+ + x / * y z w u";
-        exp1 = "+ * a b c";
-        exp1 = "* sin + x y z";
-        exp1 = "* Tan + x y z";
-        exp1 = "* sin + a b 10";
-
-        //        exp1 = sc.nextLine();
+//        exp1 = "- + - / A B C * D E * A C";
+//        exp1 = "* * / A + - B C D - E A C";
+//        exp1 = "+ 10 / * 3 5 - 16 4";
+//        exp1 = "+ + u * / w z y x";
+//        exp1 = "+ + x / * y z w u";
+//        exp1 = "+ * a b c";
+//        exp1 = "* sin + x y z";
+//        exp1 = "* Tan + x y z";
+//        exp1 = "* sin + a b 10";
+//        exp1 = "sin + a b";
+        exp1 = sc.nextLine();
         System.out.println("******************************************************");
 //        System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToInfix(exp1));
         System.out.println("Input is:\n     " + exp1 + "\nOutput is:\n" + PrefixToPostfix(exp1));
@@ -274,6 +274,10 @@ public class Program {
                 String a = output.pop();
                 String b = output.pop();
                 output.push("(" + a + " " + ch + " " + b + ")");
+            } else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos")
+                    || ch.equalsIgnoreCase("tan") || ch.equalsIgnoreCase("cot")) {
+                String a = output.pop();
+                output.push(ch + " " + a);
             } else
                 output.push(ch);
 
@@ -294,7 +298,6 @@ public class Program {
         Stack<String> output = new Stack<>();
         String[] input = prefix.split(" ");
         String operatorRegex = "[-+*/]?";
-        String TrigonometricFunctionsRegex = "[";
         for (int i = input.length - 1; i >= 0; i--) {
             String ch = input[i];
             if (ch.matches(operatorRegex)) {
@@ -318,14 +321,39 @@ public class Program {
         return output.toString() + " => " + str.trim();
     }
 
+    public static String PostfixToPrefix(String postfix) {
+        postfix = postfix.trim();
+        System.out.println("postfix Expression:\n" + postfix + "\n");
+        Stack<String> output = new Stack<>();
+        String[] input = postfix.split(" ");
+        String operatorRegex = "[-+*/]?";
+
+        for (int i = 0; i < input.length; i++) {
+            String ch = input[i];
+            if (ch.matches(operatorRegex)) {
+                String b = output.pop();
+                String a = output.pop();
+                output.push(ch + " " + a + " " + b);
+            } else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos") || ch.equalsIgnoreCase("tan") || ch.equalsIgnoreCase("cot")) {
+                String a = output.pop();
+                output.push(ch + " " + a);
+            } else
+                output.push(ch + "");
+
+
+            Print(i, output);
+        }
+
+        String str = new String("");
+        for (String ch : output) {
+            str += ch;
+            str += " ";
+        }
+        return output.toString() + " => " + str.trim();
+    }
+
     //***************************************************************************************
 
-    public static String PostfixToPrefix(String postfix) {
-        String str = null;
-
-
-        return str;
-    }
 
     public static String ShowHistory() {
         String str = null;
