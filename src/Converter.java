@@ -39,7 +39,8 @@ public class Converter {
                 return;
             case 6:
                 System.out.println("History:\n");
-                ShowHistory(1);
+//                System.out.println(Arrays.toString(historyOfConvert));
+                ShowHistory(2); //Todo in graphic click for each type for show history
                 return;
         }
     }
@@ -78,9 +79,7 @@ public class Converter {
         System.out.println("******************************************************\n");
     }
 
-
     //Converts Methods ------------------------------------------------
-
     public static String InfixToPostfix(String infix) {
         infix = infix.trim();
         var output = new Stack();
@@ -239,7 +238,7 @@ public class Converter {
         String OutputPostfix = Arrays.toString(ReverseOutputArray).replace(",", "")
                 .replace("[", "").replace("]", "").trim();
         historyOfConvert[2]++;
-        return OutputPostfix ;
+        return OutputPostfix;
     }
 
     public static String PrefixToInfix(String prefix) {
@@ -324,84 +323,87 @@ public class Converter {
         return output.toString();
     }
 
-    //    ------------------------------------------------
+    // Show History Method  ------------------------------------------------
     public static void ShowHistory(int number) {
         int[] array2 = historyOfConvert;
+        int count = 0;
+        for (int i = 0; i < 6; i++)
+            if (array2[i] == 0)
+                count++;
+        count = 6 - count;
 
-        if (number == 1) {
-            for (int j = 0; j < 6; j++) {
+        if (number == 1){
+            for (int i = 0; i < count; i++){
                 int index = 0, max = 0;
-                for (int i = 0; i < 6; i++) {
-                    if (array2[i] > max) {
-                        max = array2[i];
-                        index = i;
+                for (int j = 0; j < 6; j++){
+                    if (array2[j] > max){
+                        max = array2[j];
+                        index = j;
                     }
                 }
                 array2[index] = -1;
-                if (max == 0)
-                    continue;
                 switch (index) {
                     case 0:
                         System.out.println(max + " : " + "Infix to Postfix");
-                        return;
+                        continue;
 
                     case 1:
                         System.out.println(max + " : " + "Postfix to Infix");
-                        return;
+                        continue;
 
                     case 2:
                         System.out.println(max + " : " + "Infix to Prefix");
-                        return;
+                        continue;
 
                     case 3:
                         System.out.println(max + " : " + "Prefix to Infix");
-                        return;
+                        continue;
 
                     case 4:
                         System.out.println(max + " : " + "Prefix to Postfix");
-                        return;
+                        continue;
 
                     case 5:
                         System.out.println(max + " : " + "Postfix to Prefix");
-                        return;
+                        continue;
                 }
             }
-        } else {
-            for (int j = 0; j < 6; j++) {
-                int index = 0, min = 100000;
-                for (int i = 0; i < 6; i++) {
-                    if (array2[i] < min) {
-                        min = array2[i];
-                        index = i;
+        }else if (number == 2){
+            for (int i = 0; i < count; i++){
+                int index = 0, min = 10000;
+                for (int j = 0; j < 6; j++){
+                    if (array2[j] == 0)
+                        continue;
+                    if (array2[j] < min){
+                        min = array2[j];
+                        index = j;
                     }
                 }
-                array2[index] = 100000;
-                if (min == 0)
-                    continue;
+                array2[index] = 10000;
                 switch (index) {
                     case 0:
                         System.out.println(min + " : " + "Infix to Postfix");
-                        return;
+                        continue;
 
                     case 1:
                         System.out.println(min + " : " + "Postfix to Infix");
-                        return;
+                        continue;
 
                     case 2:
                         System.out.println(min + " : " + "Infix to Prefix");
-                        return;
+                        continue;
 
                     case 3:
                         System.out.println(min + " : " + "Prefix to Infix");
-                        return;
+                        continue;
 
                     case 4:
                         System.out.println(min + " : " + "Prefix to Postfix");
-                        return;
+                        continue;
 
                     case 5:
                         System.out.println(min + " : " + "Postfix to Prefix");
-                        return;
+                        continue;
                 }
             }
         }
