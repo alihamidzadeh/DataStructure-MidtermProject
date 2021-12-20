@@ -1,5 +1,7 @@
-import Stack_Src.Stack;
+import Memory.Stack;
+
 import java.util.Arrays;
+import java.util.Locale;
 
 public class Converter {
     private static int[] historyOfConvert = {0, 0, 0, 0, 0, 0};
@@ -42,9 +44,9 @@ public class Converter {
         }
     }
 
-    //this method check the priority of operators
+    //this method check the priority of operators ------------------------------------------------
     public static int Priority(String ch) {
-        switch (ch.toLowerCase()) {
+        switch (ch.toLowerCase(Locale.ROOT)) {
             case "sin":
             case "cos":
             case "tan":
@@ -59,10 +61,11 @@ public class Converter {
             case "-":
                 return 2;
         }
-        return -1;
+        return 0;
     }
 
-    //this method Print each series of steps
+
+    //this method Print each series of steps ------------------------------------------------
     private static void Print(int i, Stack operators, Stack output) {
         System.out.println("(" + (i + 1) + ")" + "\nRPN:\n" + output.toString());
         System.out.println("Operator operators:\n" + operators.toString());
@@ -76,10 +79,9 @@ public class Converter {
     }
 
 
-    //Converts Methods
+    //Converts Methods ------------------------------------------------
 
     public static String InfixToPostfix(String infix) {
-
         infix = infix.trim();
         var output = new Stack();
         var operators = new Stack();
@@ -90,7 +92,7 @@ public class Converter {
             String ch = input[i];
 
             //if character of infix is letter or digit push it to output
-            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]*";
+            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
             if (ch.matches(CheckDigitOrLetterPattern))
                 output.push(ch);
 
@@ -106,7 +108,7 @@ public class Converter {
             }
             //if character of infix is an operator
             else {
-                while (!operators.isEmpty() && Priority(ch) <= Priority((String) operators.peek()))
+                while (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek()))
                     output.push(operators.pop());
 
                 //finally push the new operator of infix in operators
@@ -124,20 +126,9 @@ public class Converter {
                 return "The input infix statement is invalid";
             output.push(operators.pop());
         }
-
-        String str = new String("");
-//        str += output.pop();
-//        for (String ch : output) {
-//            str += ch;
-//            str += " ";
-//        }
-        while (!output.isEmpty()){
-            str += output.pop();
-            str += " ";
-        }
         historyOfConvert[0]++;
-        return output.toString() + " => " + str.trim();
-    } //****
+        return output.toString();
+    }
 
     public static String PostfixToInfix(String postfix) {
         postfix = postfix.trim();
@@ -149,7 +140,7 @@ public class Converter {
             String ch = input[i];
 
             //if character of infix is letter or digit push it to output
-            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]*";
+            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
             if (ch.matches(CheckDigitOrLetterPattern))
                 output.push(ch);
             else if (ch.equalsIgnoreCase("sin") || ch.equalsIgnoreCase("cos")
@@ -169,17 +160,9 @@ public class Converter {
             Print(i, output);
 
         }
-        String str = new String("");
-//        for (String ch : output) {
-//            str += ch;
-//            str += " ";
-//        }
-        while (!output.isEmpty()){
-            str += output.pop();
-            str += " ";
-        }
+
         historyOfConvert[1]++;
-        return output.toString() + " => " + str.trim();
+        return output.toString();
     }
 
     public static String InfixToPrefix(String infix) {
@@ -207,7 +190,7 @@ public class Converter {
             String ch = input[i];
 
             //if character of infix is letter or digit push it to output
-            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]*";
+            String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
             if (ch.matches(CheckDigitOrLetterPattern))
                 output.push(ch);
 
@@ -256,7 +239,7 @@ public class Converter {
         String OutputPostfix = Arrays.toString(ReverseOutputArray).replace(",", "")
                 .replace("[", "").replace("]", "").trim();
         historyOfConvert[2]++;
-        return output.toString() + " => " + OutputPostfix;
+        return OutputPostfix ;
     }
 
     public static String PrefixToInfix(String prefix) {
@@ -283,16 +266,8 @@ public class Converter {
         }
 
         String str = new String("");
-//        for (String ch : output) {
-//            str += ch;
-//            str += " ";
-//        }
-        while (!output.isEmpty()){
-            str += output.pop();
-            str += " ";
-        }
         historyOfConvert[3]++;
-        return output.toString() + " => " + str.trim();
+        return output.toString();
     }
 
     public static String PrefixToPostfix(String prefix) {
@@ -317,16 +292,8 @@ public class Converter {
             Print(input.length - i - 1, output);
         }
         String str = new String("");
-//        for (String ch : output) {
-//            str += ch;
-//            str += " ";
-//        }
-        while (!output.isEmpty()){
-            str += output.pop();
-            str += " ";
-        }
         historyOfConvert[4]++;
-        return output.toString() + " => " + str.trim();
+        return output.toString();
     }
 
     public static String PostfixToPrefix(String postfix) {
@@ -353,22 +320,15 @@ public class Converter {
         }
 
         String str = new String("");
-//        for (String ch : output) {
-//            str += ch;
-//            str += " ";
-//        }
-        while (!output.isEmpty()){
-            str += output.pop();
-            str += " ";
-        }
         historyOfConvert[5]++;
-        return output.toString() + " => " + str.trim();
+        return output.toString();
     }
 
+    //    ------------------------------------------------
     public static void ShowHistory(int number) {
         int[] array2 = historyOfConvert;
 
-        if (number == 1){
+        if (number == 1) {
             for (int j = 0; j < 6; j++) {
                 int index = 0, max = 0;
                 for (int i = 0; i < 6; i++) {
@@ -406,7 +366,7 @@ public class Converter {
                         return;
                 }
             }
-        }else {
+        } else {
             for (int j = 0; j < 6; j++) {
                 int index = 0, min = 100000;
                 for (int i = 0; i < 6; i++) {

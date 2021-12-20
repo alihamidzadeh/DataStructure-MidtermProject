@@ -60,9 +60,9 @@ public class Program {
             System.out.println("Enter type of convert do you want to do:");
             int type = sc.nextInt();
             sc.nextLine();
-                System.out.println("Enter Input String:");
-                String input = sc.nextLine();
-                Converter converter = new Converter(type, input);
+            System.out.println("Enter Input String:");
+            String input = sc.nextLine();
+            Converter converter = new Converter(type, input);
 
             System.out.println("\n-------------------------------------------------------------------------");
         }

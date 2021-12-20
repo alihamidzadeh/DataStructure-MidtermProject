@@ -1,5 +1,6 @@
-package Stack_Src;
- class Node {
+package Memory;
+
+class Node {
     private String value;
     private Node next;
 
