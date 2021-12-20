@@ -1,13 +1,7 @@
+import Stack_Src.Stack;
 import java.util.Arrays;
-import java.util.Stack;
 
 public class Converter {
-//    private static int infixToPostfixCount = 0;
-//    private static int postfixToInfixCount = 0;
-//    private static int infixToPrefixCount = 0;
-//    private static int prefixToInfixCount = 0;
-//    private static int prefixToPostfixCount = 0;
-//    private static int postfixToPrefixCount = 0;
     private static int[] historyOfConvert = {0, 0, 0, 0, 0, 0};
 
     public Converter(int type, String input) {
@@ -69,23 +63,26 @@ public class Converter {
     }
 
     //this method Print each series of steps
-    private static void Print(int i, Stack<String> operators, Stack<String> output) {
+    private static void Print(int i, Stack operators, Stack output) {
         System.out.println("(" + (i + 1) + ")" + "\nRPN:\n" + output.toString());
         System.out.println("Operator operators:\n" + operators.toString());
         System.out.println("******************************************************\n");
 
     }
 
-    private static void Print(int i, Stack<String> output) {
+    private static void Print(int i, Stack output) {
         System.out.println("(" + (i + 1) + ")" + "\n" + output.toString());
         System.out.println("******************************************************\n");
     }
 
+
+    //Converts Methods
+
     public static String InfixToPostfix(String infix) {
 
         infix = infix.trim();
-        Stack<String> output = new Stack<>();
-        Stack<String> operators = new Stack<>();
+        var output = new Stack();
+        var operators = new Stack();
         String[] input = infix.split(" ");
         System.out.println("Infix Expression:\n" + infix + "\n");
 
@@ -109,7 +106,7 @@ public class Converter {
             }
             //if character of infix is an operator
             else {
-                while (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek()))
+                while (!operators.isEmpty() && Priority(ch) <= Priority((String) operators.peek()))
                     output.push(operators.pop());
 
                 //finally push the new operator of infix in operators
@@ -129,17 +126,22 @@ public class Converter {
         }
 
         String str = new String("");
-        for (String ch : output) {
-            str += ch;
+//        str += output.pop();
+//        for (String ch : output) {
+//            str += ch;
+//            str += " ";
+//        }
+        while (!output.isEmpty()){
+            str += output.pop();
             str += " ";
         }
         historyOfConvert[0]++;
         return output.toString() + " => " + str.trim();
-    }
+    } //****
 
     public static String PostfixToInfix(String postfix) {
         postfix = postfix.trim();
-        Stack<String> output = new Stack<>();
+        var output = new Stack();
         String[] input = postfix.split(" ");
         System.out.println("Postfix Expression:\n" + postfix + "\n");
 
@@ -168,8 +170,12 @@ public class Converter {
 
         }
         String str = new String("");
-        for (String ch : output) {
-            str += ch;
+//        for (String ch : output) {
+//            str += ch;
+//            str += " ";
+//        }
+        while (!output.isEmpty()){
+            str += output.pop();
             str += " ";
         }
         historyOfConvert[1]++;
@@ -187,8 +193,8 @@ public class Converter {
         }
         infix = Arrays.toString(ReverseInfixArray).replace(",", "")
                 .replace("[", "").replace("]", "");
-        Stack<String> output = new Stack<>();
-        Stack<String> operators = new Stack<>();
+        var output = new Stack();
+        var operators = new Stack();
         String[] input = infix.split(" ");
 
         for (int i = 0; i < input.length; i++) {
@@ -256,7 +262,7 @@ public class Converter {
     public static String PrefixToInfix(String prefix) {
         prefix = prefix.trim();
         System.out.println("prefix Expression:\n" + prefix + "\n");
-        Stack<String> output = new Stack<>();
+        var output = new Stack();
         String[] input = prefix.split(" ");
         String operatorRegex = "[-+*/]?";
 
@@ -277,8 +283,12 @@ public class Converter {
         }
 
         String str = new String("");
-        for (String ch : output) {
-            str += ch;
+//        for (String ch : output) {
+//            str += ch;
+//            str += " ";
+//        }
+        while (!output.isEmpty()){
+            str += output.pop();
             str += " ";
         }
         historyOfConvert[3]++;
@@ -288,7 +298,7 @@ public class Converter {
     public static String PrefixToPostfix(String prefix) {
         prefix = prefix.trim();
         System.out.println("prefix Expression:\n" + prefix + "\n");
-        Stack<String> output = new Stack<>();
+        var output = new Stack();
         String[] input = prefix.split(" ");
         String operatorRegex = "[-+*/]?";
         for (int i = input.length - 1; i >= 0; i--) {
@@ -307,8 +317,12 @@ public class Converter {
             Print(input.length - i - 1, output);
         }
         String str = new String("");
-        for (String ch : output) {
-            str += ch;
+//        for (String ch : output) {
+//            str += ch;
+//            str += " ";
+//        }
+        while (!output.isEmpty()){
+            str += output.pop();
             str += " ";
         }
         historyOfConvert[4]++;
@@ -318,7 +332,7 @@ public class Converter {
     public static String PostfixToPrefix(String postfix) {
         postfix = postfix.trim();
         System.out.println("postfix Expression:\n" + postfix + "\n");
-        Stack<String> output = new Stack<>();
+        var output = new Stack();
         String[] input = postfix.split(" ");
         String operatorRegex = "[-+*/]?";
 
@@ -339,8 +353,12 @@ public class Converter {
         }
 
         String str = new String("");
-        for (String ch : output) {
-            str += ch;
+//        for (String ch : output) {
+//            str += ch;
+//            str += " ";
+//        }
+        while (!output.isEmpty()){
+            str += output.pop();
             str += " ";
         }
         historyOfConvert[5]++;
