@@ -1,0 +1,35 @@
+//Todo test for Infix 
+        exp1 = "A / B - C + D * E - A * C";
+        exp1 = "( A / ( B - C + D ) ) * ( E - A ) * C";
+        exp1 = "10 + 3 * 5 / ( 16 - 4 )";
+        exp1 = "u + ( w / z ) * y + x";
+        exp1 = "x + y * z / w + u";
+        exp1 = "( a * b ) + c";
+        exp1 = "sin ( x + y ) * z";
+        exp1 = "Tan ( x + y ) * z";
+        exp1 = "sin ( a + b ) * 10";
+
+******************************************************
+ //Todo test for Postfix
+        exp1 = "A B / C - D E * + A C * -";
+        exp1 = "A B C - D + / E A - * C *";
+        exp1 = "10 3 5 * 16 4 - / +";
+        exp1 = "u w z / y * + x +";
+        exp1 = "x y z * w / + u +";
+        exp1 = "a b * c +";
+        exp1 = "x y + sin z *";
+        exp1 = "x y + Tan z *";
+        exp1 = "a b + sin 10 *";
+
+******************************************************
+//Todo test for Prefix
+        exp1 = "- + - / A B C * D E * A C";
+        exp1 = "* * / A + - B C D - E A C";
+        exp1 = "+ 10 / * 3 5 - 16 4";
+        exp1 = "+ + u * / w z y x";
+        exp1 = "+ + x / * y z w u";
+        exp1 = "+ * a b c";
+        exp1 = "* sin + x y z";
+        exp1 = "* Tan + x y z";
+        exp1 = "* sin + a b 10";
+  
