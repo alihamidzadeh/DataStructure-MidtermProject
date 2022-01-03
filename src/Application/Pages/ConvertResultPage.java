@@ -1,24 +1,16 @@
-package Application.Page;
+package Application.Pages;
 import Application.Graphics;
 import Application.Converter;
 
-import javafx.application.Application;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.Scanner;
 
 public class ConvertResultPage {
     static TextArea input = new TextArea();
@@ -93,11 +85,11 @@ public class ConvertResultPage {
 
         Pane root=new Pane();
         root.setStyle("-fx-background-image: url('https://i.pinimg.com/originals/cf/4e/7e/cf4e7ef82f683fcc564d78e786511559.gif'); -fx-background-size: 100% 100%");
-        VBox vbox = new VBox(30);
+        VBox vbox = new VBox(10);
 
         vbox.setAlignment(Pos.CENTER);
         vbox.setLayoutX(600);
-        vbox.setLayoutY(50);
+        vbox.setLayoutY(20);
         vbox.getChildren().addAll(convertType, inputLb, input, outputLb, output, resultLb, result,
                 convertBtn, backBtn);
         root.getChildren().add(vbox);

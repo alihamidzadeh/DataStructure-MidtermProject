@@ -1,4 +1,16 @@
-package Application;
+package Application.Sort;
+
+import Application.Graphics;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
 
 import java.util.Arrays;
 
@@ -6,6 +18,7 @@ public class Sort {
 
     private static int[] BubbleSort(int[] array) {
         int n = array.length;
+        String str = "";
         for (int i = 0; i < n - 1; i++) {
             for (int j = i + 1; j < n; j++) {
                 if (array[j] < array[i]) {
@@ -14,10 +27,15 @@ public class Sort {
                     array[j] = temp;
                 }
             }
-            System.out.println(Arrays.toString(array));
+            str += Arrays.toString(array);
+            str += "\n";
         }
+        SortResultPage.output.setText(str);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
+
+    public static String strr = "";
 
     private static int[] RecursiveBubbleSort(int[] array, int n) {
         if (n == 1)
@@ -30,13 +48,17 @@ public class Sort {
                     array[i + 1] = temp;
                 }
             }
-            System.out.println(Arrays.toString(array));
+            strr += Arrays.toString(array);
+            strr += "\n";
             RecursiveBubbleSort(array, n - 1);
         }
+        SortResultPage.output.setText(strr);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
 
     private static int[] SelectionSort(int[] array) {
+        String str = "";
 
         for (int i = 0; i < array.length; i++) {
             int min = array[i];
@@ -52,12 +74,17 @@ public class Sort {
                 array[i] = min;
                 array[index] = temp;
             }
-            System.out.println(Arrays.toString(array));
+            str += Arrays.toString(array);
+            str += "\n";
         }
+        SortResultPage.output.setText(str);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
 
     private static int[] InsertionSort(int[] array) {
+        String str = "";
+
         for (int j = 1; j < array.length; j++) {
             int key = array[j];
             int i = j - 1;
@@ -67,13 +94,16 @@ public class Sort {
             }
             array[i + 1] = key;
 
-            System.out.println(Arrays.toString(array));
+            str += Arrays.toString(array);
+            str += "\n";
         }
-
+        SortResultPage.output.setText(str);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
 
     private static int[] InsertionSortReverse(int[] array) {
+        String str = "";
         for (int j = array.length - 1; j >= 0; j--) {
             int key = array[j];
             int i = j + 1;
@@ -83,11 +113,16 @@ public class Sort {
                 array[i - 1] = yoyo;
                 i++;
             }
-            System.out.println(Arrays.toString(array));
+            str += Arrays.toString(array);
+            str += "\n";
         }
+
+        SortResultPage.output.setText(str);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
 
+    static String strrr = "";
     private static int[] RecursiveInsertionSort(int[] array, int n) {
         if (n <= 1)
             return array;
@@ -102,8 +137,13 @@ public class Sort {
                 j--;
             }
             array[j + 1] = last;
-            System.out.println(Arrays.toString(array));
+
+            strrr += Arrays.toString(array);
+            strrr += "\n";
         }
+
+        SortResultPage.output.setText(strrr);
+        SortResultPage.result.setText(Arrays.toString(array));
         return array;
     }
 
@@ -111,19 +151,28 @@ public class Sort {
     //****************************************
 
 
-
-    //*****************************************************
-    public static void main(String[] args) {
-        int arr[] = {64, 34, 25, 12, 22, 11, 90, -2, 0};
-        System.out.println(Arrays.toString(arr));
-        System.out.println("*******************************************");
-//        int[] b = BubbleSort(arr);
-//        int[] b = RecursiveBubbleSort(arr, arr.length);
-//        int[] b = SelectionSort(arr);
-//        int[] b = InsertionSort(arr);
-//        int[] b = InsertionSortReverse(arr);
-        int[] b = RecursiveInsertionSort(arr, arr.length);
-        System.out.println("*******************************************");
-        System.out.println(Arrays.toString(b));
+public Sort(int type, int[] array){
+    switch (type){
+        case 0:
+            BubbleSort(array);
+            return;
+        case 1:
+            RecursiveBubbleSort(array, array.length);
+            return;
+        case 2:
+            SelectionSort(array);
+            return;
+        case 3:
+            InsertionSort(array);
+            return;
+        case 4:
+            InsertionSortReverse(array);
+            return;
+        case 5:
+            RecursiveInsertionSort(array, array.length);
+            return;
     }
+}
+
+
 }

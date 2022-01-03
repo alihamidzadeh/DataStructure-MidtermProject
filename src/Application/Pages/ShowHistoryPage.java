@@ -1,4 +1,4 @@
-package Application.Page;
+package Application.Pages;
 
 public class ShowHistoryPage {
 }

@@ -1,6 +1,6 @@
 package Application;
 
-import Application.Page.ConvertResultPage;
+import Application.Pages.ConvertResultPage;
 import Memory.Stack;
 
 import java.util.Arrays;
@@ -8,7 +8,8 @@ import java.util.Locale;
 
 public class Converter {
     private static int[] historyOfConvert = {0, 0, 0, 0, 0, 0};
-
+//    private static HistoryArray[] historyArrays =
+    public static int countOfConvert = 0;
     public Converter(int type, String input) {
         switch (type) {
             case 0:
@@ -63,28 +64,23 @@ public class Converter {
 
     //this method Print each series of steps ------------------------------------------------
     private static String Print(int i, Stack operators, String output, String convertStep) {
-        convertStep += "\n(" + (i + 1) + ")" + "\nRPN:\n" + output;
+        convertStep += "(" + (i + 1) + ")" + "\n\nRPN:\n" + output;
         convertStep += "\n\nOperator operators:\n" + operators.toString();
-        convertStep += "\n******************************************************\n";
+        convertStep += "\n\n**************************************************************************\n\n";
         return convertStep;
     }
 
     private static String Print(int i, Stack operators, Stack output, String convertStep) {
         convertStep += "(" + (i + 1) + ")" + "\n\nRPN:\n" + output.toString();
         convertStep += "\n\nOperator operators:\n" + operators.toString();
-        convertStep += "\n\n******************************************************\n\n";
+        convertStep += "\n\n**************************************************************************\n\n";
         return convertStep;
     }
 
     private static String Print(int i, Stack output, String convertStep) {
         convertStep += "(" + (i + 1) + ")" + "\n\n" + output.toString();
-        convertStep += "\n\n******************************************************\n\n";
+        convertStep += "\n\n**************************************************************************\n\n";
         return convertStep;
-//        Result.result.setText("(" + (i + 1) + ")" + "\n" + output.toString());
-//        Result.result.setText("******************************************************\n");
-
-//        Page.output.setText("(" + (i + 1) + ")" + "\n" + output.toString());
-//        Page.output.setText("******************************************************\n");
     }
 
     //Converts Methods ------------------------------------------------
@@ -94,6 +90,28 @@ public class Converter {
         var operators = new Stack();
         String convertStep = "";
         String[] input = infix.split(" ");
+        int count1 = 0, count2 = 0;
+        String pattern = "[+*-/^]{1}";
+
+        for (int i = 0; i < input.length; i++){
+            if (input[i].equals("("))
+                count1++;
+            else if (input[i].equals(")"))
+                count2++;
+//            if (input[i].equals("(") && input[i+1].matches(pattern)) {
+//                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+//                return null;
+//            }
+//            if (input[i].matches(pattern) && input[i+1].equals(")")){
+//                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+//                return null;
+//            }
+        }
+        if (count2 != count1){
+            ConvertResultPage.output.setText("The input infix expression is incorrect.\n" +
+                    "There is a problem with parentheses.");
+            return null;
+        }
 
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
@@ -120,8 +138,19 @@ public class Converter {
             //if character of infix is an operator
             else {
                 while (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek())) {
-                    output += operators.pop();
-                    output += " ";
+                    if (ch.equals("^") && operators.peek().equals("^")) {
+                        String str = "";
+                        i++;
+                        str += input[i];
+                        str += " ";
+                        str += operators.pop();
+                        str += " ";
+                        output += str;
+                        output += " ";
+                    } else {
+                        output += operators.pop();
+                        output += " ";
+                    }
                 }
 
                 //finally push the new operator of infix in operators
@@ -135,8 +164,12 @@ public class Converter {
         //Finally, check the input expression is correct
         // and move the operators from the operators to the output
         while (!operators.isEmpty()) {
-            if (operators.peek() == "(")
-                return "The input infix statement is invalid";
+            if (operators.peek() == "(") {
+                ConvertResultPage.output.clear();
+                ConvertResultPage.result.clear();
+                ConvertResultPage.output.setText("The input infix statement is invalid");
+                return null;
+            }
             output += operators.pop();
             output += " ";
         }

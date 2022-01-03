@@ -1,5 +1,6 @@
 package Application;
-import Application.Page.*;
+import Application.Sort.*;
+import Application.Pages.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -153,7 +154,7 @@ public class Graphics extends Application {
                 "    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );\n" +
                 "    -fx-font-family: \"A Iranian Sans\";\n" +
                 "    -fx-text-fill: linear-gradient(white, #d0d0d0);\n" +
-                "    -fx-font-size: 12px;\n" +
+                "    -fx-font-size: 16px;\n" +
                 "    -fx-padding: 10 20 10 20;");
 
         Button exitBtn = new Button("Exit");
@@ -162,7 +163,7 @@ public class Graphics extends Application {
                 "    -fx-background-radius: 20;\n" +
                 "    -fx-background-insets: 0;\n" +
                 "    -fx-text-fill: white;\n" +
-                "     -fx-font-size: 14px;");
+                "     -fx-font-size: 20px;");
 
         //set Scene, Pane, ...
         Pane root = new Pane();
@@ -265,19 +266,16 @@ public class Graphics extends Application {
         sortBtn.setOnAction(actionEvent -> {
             ConvertResultPage convertResultPage = new ConvertResultPage();
             try {
-                ConvertResultPage.type = 6;
-                ConvertResultPage.typeStr = "Sorting";
-                convertResultPage.start(stage);
+                ChooseSortAlgorithm chooseSortAlgorithm = new ChooseSortAlgorithm();
+                ChooseSortAlgorithm.start(stage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
         aboutMeBtn.setOnAction(actionEvent -> {
-            ConvertResultPage convertResultPage = new ConvertResultPage();
+            AboutMePage aboutMePage = new AboutMePage();
             try {
-                ConvertResultPage.type = 7;
-                ConvertResultPage.typeStr = "About Me";
-                convertResultPage.start(stage);
+                aboutMePage.start(stage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
