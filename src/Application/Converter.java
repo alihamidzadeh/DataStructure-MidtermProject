@@ -1,5 +1,6 @@
 package Application;
 
+import Application.Page.ConvertResultPage;
 import Memory.Stack;
 
 import java.util.Arrays;
@@ -11,37 +12,29 @@ public class Converter {
     public Converter(int type, String input) {
         switch (type) {
             case 0:
-//                InfixToPostfix(input);
-                System.out.println("Output is:\n" + InfixToPostfix(input));
+                InfixToPostfix(input);
                 return;
 
             case 1:
-//                PostfixToInfix(input);
-                System.out.println("Output is:\n" + PostfixToInfix(input));
+                PostfixToInfix(input);
                 return;
 
             case 2:
-//                InfixToPrefix(input);
-                System.out.println("Input is:\n     " + input + "\nOutput is:\n" + InfixToPrefix(input));
+                InfixToPrefix(input);
                 return;
 
             case 3:
-//                PrefixToInfix(input);
-                System.out.println("Input is:\n     " + input + "\nOutput is:\n" + PrefixToInfix(input));
+                PrefixToInfix(input);
                 return;
 
             case 4:
-//                PrefixToPostfix(input);
-                System.out.println("Input is:\n     " + input + "\nOutput is:\n" + PrefixToPostfix(input));
+                PrefixToPostfix(input);
                 return;
 
             case 5:
-//                PostfixToPrefix(input);
-                System.out.println("Input is:\n     " + input + "\nOutput is:\n" + PostfixToPrefix(input));
+                PostfixToPrefix(input);
                 return;
             case 6:
-                System.out.println("History:\n");
-//                System.out.println(Arrays.toString(historyOfConvert));
                 ShowHistory(2); //Todo in graphic click for each type for show history
                 return;
         }
@@ -69,55 +62,74 @@ public class Converter {
 
 
     //this method Print each series of steps ------------------------------------------------
-    private static void Print(int i, Stack operators, Stack output) {
-        System.out.println("(" + (i + 1) + ")" + "\nRPN:\n" + output.toString());
-        System.out.println("Operator operators:\n" + operators.toString());
-        System.out.println("******************************************************\n");
-
+    private static String Print(int i, Stack operators, String output, String convertStep) {
+        convertStep += "\n(" + (i + 1) + ")" + "\nRPN:\n" + output;
+        convertStep += "\n\nOperator operators:\n" + operators.toString();
+        convertStep += "\n******************************************************\n";
+        return convertStep;
     }
 
-    private static void Print(int i, Stack output) {
-        System.out.println("(" + (i + 1) + ")" + "\n" + output.toString());
-        System.out.println("******************************************************\n");
+    private static String Print(int i, Stack operators, Stack output, String convertStep) {
+        convertStep += "(" + (i + 1) + ")" + "\n\nRPN:\n" + output.toString();
+        convertStep += "\n\nOperator operators:\n" + operators.toString();
+        convertStep += "\n\n******************************************************\n\n";
+        return convertStep;
+    }
+
+    private static String Print(int i, Stack output, String convertStep) {
+        convertStep += "(" + (i + 1) + ")" + "\n\n" + output.toString();
+        convertStep += "\n\n******************************************************\n\n";
+        return convertStep;
+//        Result.result.setText("(" + (i + 1) + ")" + "\n" + output.toString());
+//        Result.result.setText("******************************************************\n");
+
+//        Page.output.setText("(" + (i + 1) + ")" + "\n" + output.toString());
+//        Page.output.setText("******************************************************\n");
     }
 
     //Converts Methods ------------------------------------------------
     public static String InfixToPostfix(String infix) {
         infix = infix.trim();
-        var output = new Stack();
+        String output = "";
         var operators = new Stack();
+        String convertStep = "";
         String[] input = infix.split(" ");
-        System.out.println("Infix Expression:\n" + infix + "\n");
 
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
 
             //if character of infix is letter or digit push it to output
             String CheckDigitOrLetterPattern = "[\\d]*[a-zA-Z]?";
-            if (ch.matches(CheckDigitOrLetterPattern))
-                output.push(ch);
+            if (ch.matches(CheckDigitOrLetterPattern)) {
+                output += ch;
+                output += " ";
+            }
 
-                //if character of infix is '(', push it to operators
+            //if character of infix is '(', push it to operators
             else if (ch.equals("("))
                 operators.push(ch);
 
             else if (ch.equals(")")) {
-                while (!operators.isEmpty() && !operators.peek().equals("("))
-                    output.push(operators.pop());
+                while (!operators.isEmpty() && !operators.peek().equals("(")) {
+                    output += operators.pop();
+                    output += " ";
+                }
                 //finally pop '(' in operators
                 operators.pop();
             }
             //if character of infix is an operator
             else {
-                while (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek()))
-                    output.push(operators.pop());
+                while (!operators.isEmpty() && Priority(ch) <= Priority(operators.peek())) {
+                    output += operators.pop();
+                    output += " ";
+                }
 
                 //finally push the new operator of infix in operators
                 operators.push(ch);
             }
 
             //Print each series of steps
-            Print(i, operators, output);
+            convertStep = Print(i, operators, output, convertStep);
         }
 
         //Finally, check the input expression is correct
@@ -125,17 +137,20 @@ public class Converter {
         while (!operators.isEmpty()) {
             if (operators.peek() == "(")
                 return "The input infix statement is invalid";
-            output.push(operators.pop());
+            output += operators.pop();
+            output += " ";
         }
         historyOfConvert[0]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return output.toString();
     }
 
     public static String PostfixToInfix(String postfix) {
         postfix = postfix.trim();
         var output = new Stack();
+        String convertStep = "";
         String[] input = postfix.split(" ");
-        System.out.println("Postfix Expression:\n" + postfix + "\n");
 
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
@@ -158,18 +173,19 @@ public class Converter {
                     output.push("(" + a + ch + b + ")");
             }
             //Print each series of steps
-            Print(i, output);
+            convertStep = Print(i, output, convertStep);
 
         }
 
         historyOfConvert[1]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return output.toString();
     }
 
     public static String InfixToPrefix(String infix) {
         infix = infix.trim();
-        System.out.println("Infix Expression:\n" + infix + "\n");
-
+        String convertStep = "";
         String[] InfixArray = infix.split(" ");
         String[] ReverseInfixArray = new String[InfixArray.length];
         for (int i = 0; i < InfixArray.length; i++) {
@@ -220,7 +236,8 @@ public class Converter {
             }
 
             //Print each series of steps
-            Print(i, operators, output);
+
+            convertStep = Print(i, operators, output, convertStep);
         }
 
         //Finally, check the input expression is correct
@@ -240,12 +257,14 @@ public class Converter {
         String OutputPostfix = Arrays.toString(ReverseOutputArray).replace(",", "")
                 .replace("[", "").replace("]", "").trim();
         historyOfConvert[2]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return OutputPostfix;
     }
 
     public static String PrefixToInfix(String prefix) {
         prefix = prefix.trim();
-        System.out.println("prefix Expression:\n" + prefix + "\n");
+        String convertStep = "";
         var output = new Stack();
         String[] input = prefix.split(" ");
         String operatorRegex = "[^-+*/]?";
@@ -263,17 +282,18 @@ public class Converter {
             } else
                 output.push(ch);
 
-            Print(input.length - i - 1, output);
+            convertStep = Print(input.length - i - 1, output, convertStep);
         }
 
-        String str = new String("");
         historyOfConvert[3]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return output.toString();
     }
 
     public static String PrefixToPostfix(String prefix) {
         prefix = prefix.trim();
-        System.out.println("prefix Expression:\n" + prefix + "\n");
+        String convertStep = new String("");
         var output = new Stack();
         String[] input = prefix.split(" ");
         String operatorRegex = "[-^+*/]?";
@@ -290,17 +310,19 @@ public class Converter {
             } else
                 output.push(ch);
 
-            Print(input.length - i - 1, output);
+            convertStep = Print(input.length - i - 1, output, convertStep);
         }
-        String str = new String("");
         historyOfConvert[4]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return output.toString();
     }
 
     public static String PostfixToPrefix(String postfix) {
         postfix = postfix.trim();
-        System.out.println("postfix Expression:\n" + postfix + "\n");
         var output = new Stack();
+        String convertStep = "";
+
         String[] input = postfix.split(" ");
         String operatorRegex = "[-^+*/]?";
 
@@ -317,11 +339,12 @@ public class Converter {
                 output.push(ch + "");
 
 
-            Print(i, output);
+            convertStep = Print(i, output, convertStep);
         }
 
-        String str = new String("");
         historyOfConvert[5]++;
+        ConvertResultPage.output.setText(convertStep);
+        ConvertResultPage.result.setText(output.toString());
         return output.toString();
     }
 
@@ -334,11 +357,11 @@ public class Converter {
                 count++;
         count = 6 - count;
 
-        if (number == 1){
-            for (int i = 0; i < count; i++){
+        if (number == 1) {
+            for (int i = 0; i < count; i++) {
                 int index = 0, max = 0;
-                for (int j = 0; j < 6; j++){
-                    if (array2[j] > max){
+                for (int j = 0; j < 6; j++) {
+                    if (array2[j] > max) {
                         max = array2[j];
                         index = j;
                     }
@@ -370,13 +393,13 @@ public class Converter {
                         continue;
                 }
             }
-        }else if (number == 2){
-            for (int i = 0; i < count; i++){
+        } else if (number == 2) {
+            for (int i = 0; i < count; i++) {
                 int index = 0, min = 10000;
-                for (int j = 0; j < 6; j++){
+                for (int j = 0; j < 6; j++) {
                     if (array2[j] == 0)
                         continue;
-                    if (array2[j] < min){
+                    if (array2[j] < min) {
                         min = array2[j];
                         index = j;
                     }

@@ -3,4 +3,5 @@ module DS.MidtermProject {
     requires javafx.controls;
     requires javafx.swt;
     opens Application;
+    opens Application.Page;
 }
