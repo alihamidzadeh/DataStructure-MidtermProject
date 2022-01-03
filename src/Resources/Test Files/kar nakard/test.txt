@@ -1,0 +1,3 @@
+infix: a + b * c ^ ( d / e * f ) / m ^ ( n ^ k )
+prefix: + a / * b ^ c * / d e f ^ m ^ n k
+postfix: a b c d e / f * ^ * m n k ^ ^ / +
