@@ -1,16 +1,6 @@
 package Application.Sort;
 
-import Application.Graphics;
-import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
+import Application.Pages.SortResultPage;
 
 import java.util.Arrays;
 
@@ -123,6 +113,7 @@ public class Sort {
     }
 
     static String strrr = "";
+
     private static int[] RecursiveInsertionSort(int[] array, int n) {
         if (n <= 1)
             return array;
@@ -151,28 +142,28 @@ public class Sort {
     //****************************************
 
 
-public Sort(int type, int[] array){
-    switch (type){
-        case 0:
-            BubbleSort(array);
-            return;
-        case 1:
-            RecursiveBubbleSort(array, array.length);
-            return;
-        case 2:
-            SelectionSort(array);
-            return;
-        case 3:
-            InsertionSort(array);
-            return;
-        case 4:
-            InsertionSortReverse(array);
-            return;
-        case 5:
-            RecursiveInsertionSort(array, array.length);
-            return;
+    public Sort(int type, int[] array) {
+        switch (type) {
+            case 0:
+                BubbleSort(array);
+                return;
+            case 1:
+                RecursiveBubbleSort(array, array.length);
+                return;
+            case 2:
+                SelectionSort(array);
+                return;
+            case 3:
+                InsertionSort(array);
+                return;
+            case 4:
+                InsertionSortReverse(array);
+                return;
+            case 5:
+                RecursiveInsertionSort(array, array.length);
+                return;
+        }
     }
-}
 
 
 }

@@ -1,6 +1,7 @@
 package Application.Pages;
+
 import Application.Graphics;
-import Application.Converter;
+import Application.Convert.Converter;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -67,8 +68,13 @@ public class ConvertResultPage {
         //*******
 
         convertBtn.setOnAction(actionEvent -> {
-            Converter converter = new Converter(type, input.getText());
-            input.setEditable(false);
+            if (input.getText().isEmpty()){
+                output.setText("Input is empty!");
+            }else {
+                Converter converter = new Converter(type, input.getText());
+                input.setEditable(false);
+                convertBtn.setDisable(true);
+            }
         });
 
         backBtn.setOnAction(actionEvent -> {
@@ -83,13 +89,15 @@ public class ConvertResultPage {
             }
         });
 
-        Pane root=new Pane();
+        Pane root = new Pane();
         root.setStyle("-fx-background-image: url('https://i.pinimg.com/originals/cf/4e/7e/cf4e7ef82f683fcc564d78e786511559.gif'); -fx-background-size: 100% 100%");
         VBox vbox = new VBox(10);
 
         vbox.setAlignment(Pos.CENTER);
-        vbox.setLayoutX(600);
+//        vbox.setLayoutX(600);
+        vbox.setLayoutX(100);
         vbox.setLayoutY(20);
+//        vbox.setLayoutY(10);
         vbox.getChildren().addAll(convertType, inputLb, input, outputLb, output, resultLb, result,
                 convertBtn, backBtn);
         root.getChildren().add(vbox);
@@ -97,6 +105,7 @@ public class ConvertResultPage {
         stage.setScene(scene1);
         stage.setResizable(true);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.alwaysOnTopProperty();
         stage.show();
     }

@@ -1,4 +1,5 @@
 package Application;
+
 import Application.Sort.*;
 import Application.Pages.*;
 import javafx.application.Application;
@@ -24,7 +25,7 @@ public class Graphics extends Application {
         stage.setY(50);
 
         //set Buttons
-        Label chooseLB = new Label("Choose one Buttons");
+        Label chooseLB = new Label("Choose one Button");
         chooseLB.setStyle("-fx-font-family: 'Impact';\n" +
                 "-fx-font-size: 40px;\n" +
                 "-fx-font-weight: bold;\n" +
@@ -172,7 +173,7 @@ public class Graphics extends Application {
         VBox vbox = new VBox(20);
         vbox.setAlignment(Pos.CENTER);
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        vbox.setLayoutX((primaryScreenBounds.getMaxX()/2)-(primaryScreenBounds.getMaxX()/8));
+        vbox.setLayoutX((primaryScreenBounds.getMaxX() / 2) - (primaryScreenBounds.getMaxX() / 8));
         vbox.setLayoutY(15);
         vbox.getChildren().addAll(chooseLB, inf2pos, post2inf, inf2pre, pre2inf, pre2post, post2pre, showH, sortBtn, aboutMeBtn, exitBtn);
         root.getChildren().add(vbox);
@@ -180,10 +181,9 @@ public class Graphics extends Application {
         stage.setScene(scene1);
         stage.setResizable(true);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.alwaysOnTopProperty();
         stage.show();
-
-
 
 
 //set Action for botton
@@ -253,11 +253,10 @@ public class Graphics extends Application {
         });
 
         showH.setOnAction(actionEvent -> {
-            ConvertResultPage convertResultPage = new ConvertResultPage();
+            ShowHistoryPage showHistoryPage = new ShowHistoryPage();
             try {
-                ConvertResultPage.type = 6;
-                ConvertResultPage.typeStr = "Show History";
-                convertResultPage.start(stage);
+//                ConvertResultPage.type = 6;
+                showHistoryPage.start(stage);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

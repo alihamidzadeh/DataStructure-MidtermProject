@@ -1,6 +1,7 @@
 package Application.Sort;
 
 import Application.Graphics;
+import Application.Pages.SortResultPage;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;

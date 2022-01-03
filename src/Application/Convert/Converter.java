@@ -1,6 +1,7 @@
-package Application;
+package Application.Convert;
 
 import Application.Pages.ConvertResultPage;
+import Application.Pages.ShowHistoryPage;
 import Memory.Stack;
 
 import java.util.Arrays;
@@ -8,8 +9,7 @@ import java.util.Locale;
 
 public class Converter {
     private static int[] historyOfConvert = {0, 0, 0, 0, 0, 0};
-//    private static HistoryArray[] historyArrays =
-    public static int countOfConvert = 0;
+
     public Converter(int type, String input) {
         switch (type) {
             case 0:
@@ -36,7 +36,7 @@ public class Converter {
                 PostfixToPrefix(input);
                 return;
             case 6:
-                ShowHistory(2); //Todo in graphic click for each type for show history
+                ShowHistory(input);
                 return;
         }
     }
@@ -90,28 +90,31 @@ public class Converter {
         var operators = new Stack();
         String convertStep = "";
         String[] input = infix.split(" ");
-        int count1 = 0, count2 = 0;
-        String pattern = "[+*-/^]{1}";
 
-        for (int i = 0; i < input.length; i++){
+        //check the input
+        int count1 = 0, count2 = 0;
+        String pattern1 = "[+*/^]{1}";
+        String pattern2 = "[+*-/^]{1}";
+        for (int i = 0; i < input.length; i++) {
             if (input[i].equals("("))
                 count1++;
             else if (input[i].equals(")"))
                 count2++;
-//            if (input[i].equals("(") && input[i+1].matches(pattern)) {
-//                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
-//                return null;
-//            }
-//            if (input[i].matches(pattern) && input[i+1].equals(")")){
-//                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
-//                return null;
-//            }
+            if (input[i].equals("(") && input[i + 1].matches(pattern1)) {
+                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+                return null;
+            }
+            if (input[i].matches(pattern2) && input[i + 1].equals(")")) {
+                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+                return null;
+            }
         }
-        if (count2 != count1){
+        if (count2 != count1) {
             ConvertResultPage.output.setText("The input infix expression is incorrect.\n" +
                     "There is a problem with parentheses.");
             return null;
         }
+
 
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
@@ -185,6 +188,13 @@ public class Converter {
         String convertStep = "";
         String[] input = postfix.split(" ");
 
+        //check the input
+        String pattern1 = "[+*-/^]{1}";
+        if (input[0].matches(pattern1) || !input[input.length - 1].matches(pattern1)) {
+            ConvertResultPage.output.setText("The input postfix expression is incorrect.\n");
+            return null;
+        }
+
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
 
@@ -221,9 +231,35 @@ public class Converter {
         String convertStep = "";
         String[] InfixArray = infix.split(" ");
         String[] ReverseInfixArray = new String[InfixArray.length];
+
+        //check the input
+        int count1 = 0, count2 = 0;
+        String pattern1 = "[+*/^]{1}";
+        String pattern2 = "[+*-/^]{1}";
+        for (int i = 0; i < InfixArray.length; i++) {
+            if (InfixArray[i].equals("("))
+                count1++;
+            else if (InfixArray[i].equals(")"))
+                count2++;
+            if (InfixArray[i].equals("(") && InfixArray[i + 1].matches(pattern1)) {
+                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+                return null;
+            }
+            if (InfixArray[i].matches(pattern2) && InfixArray[i + 1].equals(")")) {
+                ConvertResultPage.output.setText("The input infix expression is incorrect.\n");
+                return null;
+            }
+        }
+        if (count2 != count1) {
+            ConvertResultPage.output.setText("The input infix expression is incorrect.\n" +
+                    "There is a problem with parentheses.");
+            return null;
+        }
+
         for (int i = 0; i < InfixArray.length; i++) {
             ReverseInfixArray[i] = InfixArray[InfixArray.length - i - 1];
         }
+
         infix = Arrays.toString(ReverseInfixArray).replace(",", "")
                 .replace("[", "").replace("]", "");
         var output = new Stack();
@@ -276,8 +312,11 @@ public class Converter {
         //Finally, check the input expression is correct
         // and move the operators from the operators to the output
         while (!operators.isEmpty()) {
-            if (operators.peek() == "(")
-                return "The input infix statement is invalid";
+            if (operators.peek() == "(") {
+                ConvertResultPage.output.clear();
+                ConvertResultPage.output.setText("The input infix statement is invalid");
+                return null;
+            }
             output.push(operators.pop());
         }
 
@@ -291,7 +330,7 @@ public class Converter {
                 .replace("[", "").replace("]", "").trim();
         historyOfConvert[2]++;
         ConvertResultPage.output.setText(convertStep);
-        ConvertResultPage.result.setText(output.toString());
+        ConvertResultPage.result.setText(OutputPostfix);
         return OutputPostfix;
     }
 
@@ -300,7 +339,13 @@ public class Converter {
         String convertStep = "";
         var output = new Stack();
         String[] input = prefix.split(" ");
-        String operatorRegex = "[^-+*/]?";
+        String operatorRegex = "[+*-/^]{1}";
+
+        //check the input
+        if (!input[0].matches(operatorRegex) || input[input.length - 1].matches(operatorRegex)) {
+            ConvertResultPage.output.setText("The input prefix expression is incorrect.\n");
+            return null;
+        }
 
         for (int i = input.length - 1; i >= 0; i--) {
             String ch = input[i];
@@ -330,6 +375,13 @@ public class Converter {
         var output = new Stack();
         String[] input = prefix.split(" ");
         String operatorRegex = "[-^+*/]?";
+        //check the input
+        if (!input[0].matches(operatorRegex) || input[input.length - 1].matches(operatorRegex)) {
+            ConvertResultPage.output.setText("The input prefix expression is incorrect.\n");
+            return null;
+        }
+
+
         for (int i = input.length - 1; i >= 0; i--) {
             String ch = input[i];
             if (ch.matches(operatorRegex)) {
@@ -357,7 +409,13 @@ public class Converter {
         String convertStep = "";
 
         String[] input = postfix.split(" ");
+
+        //check the input
         String operatorRegex = "[-^+*/]?";
+        if (input[0].matches(operatorRegex) || !input[input.length - 1].matches(operatorRegex)) {
+            ConvertResultPage.output.setText("The input postfix expression is incorrect.\n");
+            return null;
+        }
 
         for (int i = 0; i < input.length; i++) {
             String ch = input[i];
@@ -382,15 +440,18 @@ public class Converter {
     }
 
     // Show History Method  ------------------------------------------------
-    public static void ShowHistory(int number) {
-        int[] array2 = historyOfConvert;
+    public void ShowHistory(String number) {
+        int[] array2 = new int[6];
+        for (int i = 0; i < 6; i++)
+            array2[i] = historyOfConvert[i];
+        String str = "";
         int count = 0;
         for (int i = 0; i < 6; i++)
             if (array2[i] == 0)
                 count++;
         count = 6 - count;
 
-        if (number == 1) {
+        if (number.equals("1")) {
             for (int i = 0; i < count; i++) {
                 int index = 0, max = 0;
                 for (int j = 0; j < 6; j++) {
@@ -402,31 +463,33 @@ public class Converter {
                 array2[index] = -1;
                 switch (index) {
                     case 0:
-                        System.out.println(max + " : " + "Infix to Postfix");
+                        str += max + " : " + "Infix to Postfix\n";
                         continue;
 
                     case 1:
-                        System.out.println(max + " : " + "Postfix to Infix");
+                        str += max + " : " + "Postfix to Infix\n";
                         continue;
 
                     case 2:
-                        System.out.println(max + " : " + "Infix to Prefix");
+                        str += max + " : " + "Infix to Prefix\n";
                         continue;
 
                     case 3:
-                        System.out.println(max + " : " + "Prefix to Infix");
+                        str += max + " : " + "Prefix to Infix\n";
                         continue;
 
                     case 4:
-                        System.out.println(max + " : " + "Prefix to Postfix");
+                        str += max + " : " + "Prefix to Postfix\n";
                         continue;
 
                     case 5:
-                        System.out.println(max + " : " + "Postfix to Prefix");
+                        str += max + " : " + "Postfix to Prefix\n";
                         continue;
                 }
             }
-        } else if (number == 2) {
+            ShowHistoryPage.showHistory.setText(str);
+
+        } else if (number.equals("2")) {
             for (int i = 0; i < count; i++) {
                 int index = 0, min = 10000;
                 for (int j = 0; j < 6; j++) {
@@ -440,31 +503,31 @@ public class Converter {
                 array2[index] = 10000;
                 switch (index) {
                     case 0:
-                        System.out.println(min + " : " + "Infix to Postfix");
+                        str += min + " : " + "Infix to Postfix\n";
                         continue;
 
                     case 1:
-                        System.out.println(min + " : " + "Postfix to Infix");
+                        str += min + " : " + "Postfix to Infix\n";
                         continue;
 
                     case 2:
-                        System.out.println(min + " : " + "Infix to Prefix");
+                        str += min + " : " + "Infix to Prefix\n";
                         continue;
 
                     case 3:
-                        System.out.println(min + " : " + "Prefix to Infix");
+                        str += min + " : " + "Prefix to Infix\n";
                         continue;
 
                     case 4:
-                        System.out.println(min + " : " + "Prefix to Postfix");
+                        str += min + " : " + "Prefix to Postfix\n";
                         continue;
 
                     case 5:
-                        System.out.println(min + " : " + "Postfix to Prefix");
+                        str += min + " : " + "Postfix to Prefix\n";
                         continue;
                 }
             }
+            ShowHistoryPage.showHistory.setText(str);
         }
-
     }
 }

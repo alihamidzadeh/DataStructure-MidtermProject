@@ -48,6 +48,7 @@ public class AboutMePage {
                 "    - convert Infix Expression to Postfix\n" +
                 "    - convert Infix Expression to Postfix\n" +
                 "    - convert Infix Expression to Postfix\n" +
+                "    - Conversions with Trigonometric Functions\n" +
                 "    - Displays a history of conversions Ordered by the user\n" +
                 "    - This program has some of the sorting algorithms that we have been taught in the data structure lesson\n" +
                 "    - This application have a Graphic interface with a beautiful background\n" +
@@ -88,6 +89,7 @@ public class AboutMePage {
         stage.setScene(scene1);
         stage.setResizable(true);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.alwaysOnTopProperty();
         stage.show();
 

@@ -5,4 +5,5 @@ module DS.MidtermProject {
     opens Application;
     opens Application.Pages;
     opens Application.Sort;
+    opens Application.Convert;
 }

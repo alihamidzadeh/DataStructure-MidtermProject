@@ -1,6 +1,6 @@
-package Application.Sort;
+package Application.Pages;
 
-import Application.Graphics;
+import Application.Sort.ChooseSortAlgorithm;
 import Application.Sort.Sort;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -68,23 +68,29 @@ public class SortResultPage {
         Button backBtn = new Button("back");
 
         sortBtn.setOnAction(actionEvent -> {
-            String[] strArr = input.getText().trim().split(" ");
-            int[] array = new int[strArr.length];
-            String str = "";
-            for (int i = 0; i < strArr.length; i++){
-                try {
-                    array[i] = Integer.parseInt(strArr[i]);
-                }catch (NumberFormatException ex){
-                    str += "Input is Inccorect!\nMaybe there is a character that is not a number.\n<<< ";
-                    str += ex.getMessage();
-                    str += " >>>\n \"Press Back button\" to get back to menu.";
-                    output.setText(str);
-                    input.setEditable(false);
-                    return;
+
+            if (input.getText().isEmpty()) {
+                output.setText("Input is empty!");
+            }else {
+                String[] strArr = input.getText().trim().split(" ");
+                int[] array = new int[strArr.length];
+                String str = "";
+                for (int i = 0; i < strArr.length; i++) {
+                    try {
+                        array[i] = Integer.parseInt(strArr[i]);
+                    } catch (NumberFormatException ex) {
+                        str += "Input is Inccorect!\nMaybe there is a character that is not a number.\n<<< ";
+                        str += ex.getMessage();
+                        str += " >>>\n \"Press Back button\" to get back to menu.";
+                        output.setText(str);
+                        input.setEditable(false);
+                        return;
+                    }
                 }
+                Sort sort = new Sort(type, array);
+                input.setEditable(false);
+                sortBtn.setDisable(true);
             }
-            Sort sort = new Sort(type, array);
-            input.setEditable(false);
         });
 
         backBtn.setOnAction(actionEvent -> {
@@ -109,12 +115,13 @@ public class SortResultPage {
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
         vbox.setLayoutX((primaryScreenBounds.getMaxX() / 2) - (primaryScreenBounds.getMaxX() / 8));
         vbox.setLayoutY(5);
-        vbox.getChildren().addAll(convertType, inputLb,input, outputLb, output, resultLb, result, sortBtn, backBtn);
+        vbox.getChildren().addAll(convertType, inputLb, input, outputLb, output, resultLb, result, sortBtn, backBtn);
         root.getChildren().add(vbox);
         Scene scene1 = new Scene(root, 500, 300);
         stage.setScene(scene1);
         stage.setResizable(true);
         stage.setFullScreen(true);
+        stage.setFullScreenExitHint("");
         stage.alwaysOnTopProperty();
         stage.show();
     }
