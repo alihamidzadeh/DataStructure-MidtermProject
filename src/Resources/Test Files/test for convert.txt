@@ -1,4 +1,4 @@
-//Todo test for Infix 
+// test for Infix 
         exp1 = "A / B - C + D * E - A * C";
         exp1 = "( A / ( B - C + D ) ) * ( E - A ) * C";
         exp1 = "10 + 3 * 5 / ( 16 - 4 )";
@@ -10,7 +10,7 @@
         exp1 = "sin ( a + b ) * 10";
 
 ******************************************************
- //Todo test for Postfix
+ // test for Postfix
         exp1 = "A B / C - D E * + A C * -";
         exp1 = "A B C - D + / E A - * C *";
         exp1 = "10 3 5 * 16 4 - / +";
@@ -22,7 +22,7 @@
         exp1 = "a b + sin 10 *";
 
 ******************************************************
-//Todo test for Prefix
+// test for Prefix
         exp1 = "- + - / A B C * D E * A C";
         exp1 = "* * / A + - B C D - E A C";
         exp1 = "+ 10 / * 3 5 - 16 4";
